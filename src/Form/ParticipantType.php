@@ -16,9 +16,15 @@ class ParticipantType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom',
+                'attr' => [
+                    'placeholder' => 'Entrez le nom du participant',
+                ],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
+                'attr' => [
+                    'placeholder' => 'Entrez l\'email du participant',
+                ],
             ]);
     }
 
@@ -26,6 +32,7 @@ class ParticipantType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Participants::class,
+            'translation_domain' => 'forms', // Utilisez ce domaine pour les traductions si nécessaire
         ]);
     }
 }

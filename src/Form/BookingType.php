@@ -20,6 +20,8 @@ class BookingType extends AbstractType
             ->add('product', EntityType::class, [
                 'class' => Product::class,
                 'choice_label' => 'forfait',
+                'label' => 'Produit',
+                'placeholder' => 'Sélectionnez un produit',
             ])
             ->add('period', ChoiceType::class, [
                 'choices' => [
@@ -28,6 +30,7 @@ class BookingType extends AbstractType
                 ],
                 'required' => false,
                 'placeholder' => 'Sélectionnez une période',
+                'label' => 'Période',
             ])
             ->add('isGroup', CheckboxType::class, [
                 'label' => 'Est-ce une réservation de groupe?',
@@ -40,7 +43,10 @@ class BookingType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
                 'required' => false,
-                
+                'label' => 'Participants',
+                'prototype' => true,
+                'prototype_name' => '__participant__',
+                'attr' => ['class' => 'participant-collection']
             ]);
     }
 
@@ -50,6 +56,7 @@ class BookingType extends AbstractType
             'data_class' => Booking::class,
             'render_fieldset' => false,
             'show_legend' => false,
+            'translation_domain' => 'forms', // Vous pouvez spécifier un domaine de traduction ici si vous avez des fichiers de traduction.
         ]);
     }
 }

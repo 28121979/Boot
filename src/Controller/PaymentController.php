@@ -44,7 +44,7 @@ class PaymentController extends AbstractController
             'payment_method_types' => ['card'],
             'line_items' => [[
                 'price_data' => [
-                    'currency' => 'usd',
+                    'currency' => 'eur',
                     'product_data' => [
                         'name' => 'Booking ' . $invoice->getBooking()->getProduct()->getForfait(),
                         'images' => [$productImageUrl],

@@ -2,13 +2,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Confirm Booking</title>
+    <title>Confirmer votre reservation</title>
     <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
-    <h1>Confirm your booking</h1>
-    <p>Please confirm your booking by proceeding to the payment.</p>
-    <button id="checkout-button">Pay Now</button>
+    <h1>Confirmer votre reservation</h1>
+    <p>Veuillez confirmer votre réservation en procédant au paiement.</p>
+    <button id="checkout-button">Payer maintenant</button>
     <script type="text/javascript">
         var stripe = Stripe('{{ publicKey }}');
         var checkoutButton = document.getElementById('checkout-button');
