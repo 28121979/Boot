@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register
+{% endblock %}
+
+{% block body %}
+	{% for flash_error in app.flashes('verify_email_error') %}
+		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+	{% endfor %}
+	<div class="container d-flex justify-content-center align-items-center vh-100">
+		<div class="card shadow p-4" style="max-width: 400px; width: 100%;">
+			<div class="text-center mb-3">
+				<img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbW16dDV0aTZjbXU2cXY4N2I0eHZqdjhrdnVtem5udWl6Z3AzZ283ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/5bzysN9TANWB99yOAB/giphy.gif" alt="Animation" class="img-fluid">
+			</div>
+			<h1 class="h3 mb-3 font-weight-normal text-center">S'inscrire</h1>
+
+			{{ form_errors(registrationForm) }}
+
+			{{ form_start(registrationForm) }}
+			<div class="mb-3">
+				{{ form_label(registrationForm.email, 'Votre email', {'label_attr': {'class': 'form-label'}}) }}
+				{{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+			</div>
+			<div class="mb-3 position-relative">
+				{{ form_label(registrationForm.plainPassword, 'Votre mot de passe', {'label_attr': {'class': 'form-label'}}) }}
+				{{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'id': 'plainPassword'}}) }}
+				<span toggle="#plainPassword" class="lni lni-eye field-icon toggle-password" style="position: absolute; right: 10px; top: 35px; cursor: pointer;"></span>
+			</div>
+			<div class="mb-3 position-relative">
+				{{ form_label(registrationForm.confirmPassword, 'Confirmez le mot de passe', {'label_attr': {'class': 'form-label'}}) }}
+				{{ form_widget(registrationForm.confirmPassword, {'attr': {'class': 'form-control', 'id': 'confirmPassword'}}) }}
+				<span toggle="#confirmPassword" class="lni lni-eye field-icon toggle-password" style="position: absolute; right: 10px; top: 35px; cursor: pointer;"></span>
+			</div>
+			<div class="mb-3 form-check">
+				{{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+				{{ form_label(registrationForm.agreeTerms, null, {'label_attr': {'class': 'form-check-label'}}) }}
+			</div>
+
+			<button type="submit" class="btn btn-lg btn-blueboot w-100">S'enregistrer</button>
+			{{ form_end(registrationForm) }}
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+const togglePassword = document.querySelectorAll('.toggle-password');
+togglePassword.forEach(toggle => {
+toggle.addEventListener('click', function (e) { // Get the target input
+const passwordField = this.previousElementSibling; // Sélectionne le champ de mot de passe précédent
+if (passwordField) { // Toggle the type attribute
+const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+passwordField.setAttribute('type', type);
+// Toggle the eye / eye slash icon
+this.classList.toggle('lni-eye-slash');
+}
+});
+});
+
+const form = document.querySelector('form');
+form.addEventListener('submit', function (e) {
+const password = document.getElementById('plainPassword').value;
+const confirmPassword = document.getElementById('confirmPassword').value;
+
+if (password !== confirmPassword) {
+e.preventDefault();
+alert('Les mots de passe ne correspondent pas.');
+}
+});
+});
+	</script>
+{% endblock %}

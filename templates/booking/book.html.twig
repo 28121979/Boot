@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réserver un bootcamp
+{% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	{{ encore_entry_link_tags('calendar') }}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="https://js.stripe.com/v3/"></script>
+	{{ encore_entry_script_tags('calendar') }}
+
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid">
+		<h1>Réserver un bootcamp</h1>
+		<div id="calendar"></div>
+		<!-- Modal pour le formulaire de réservation -->
+		<div id="bookingModal" class="modal">
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<div id="bookingFormContainer"></div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

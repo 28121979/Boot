@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="{{ asset('images/LogoBootcampsCenturio.jpg') }}">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+            <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        {% endblock %}
+    </head>
+    <body>
+        {{ include('elements/menu.html.twig') }}
+        {{ include('elements/message.html.twig') }}
+        {% block modal %}{% endblock %}
+        {% block body %}{% endblock %}
+    </body>
+</html>

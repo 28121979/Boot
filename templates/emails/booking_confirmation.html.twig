@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ 'Booking Confirmation'|trans }}</title>
+</head>
+<body>
+    <h1>{{ 'Booking Confirmation'|trans }}</h1>
+    <p>{{ 'Dear'|trans }} {{ booking.profile.user.fullName }},</p>
+    <p>{{ 'Your booking has been successfully paid for. Thank you!'|trans }}</p>
+    <p>{{ 'Booking Details:'|trans }}</p>
+    <ul>
+        <li>{{ 'Date:'|trans }} {{ booking.bookAt|date('Y-m-d H:i') }}</li>
+        <li>{{ 'Forfait:'|trans }} {{ booking.product.forfait }}</li>
+        <li>{{ 'Amount:'|trans }} {{ booking.invoice.amount }}</li>
+    </ul>
+    <p>{{ 'Best regards,'|trans }}</p>
+    <p>{{ 'Your Company'|trans }}</p>
+</body>
+</html>

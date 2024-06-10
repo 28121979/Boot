@@ -1,0 +1,37 @@
+#home{
+    background-image: url('../img/logo-accueil.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: #000;
+}
+.sidebar-link span {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.15rem;
+    text-decoration: none;
+} 
+.textAccueil {
+    color: #fff;
+    text-align: jUstify;
+    font-family: metropolian;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: 0.84px;
+}
+
+#accueil {
+    max-width: 800px;
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    text-align: center;
+    margin: 0 auto; 
+}
+.img-fluid {
+    width: 100%;
+}
+.wrapper {
+    display: flex;
+}

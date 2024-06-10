@@ -1,0 +1,77 @@
+#sidebar {
+    width: 70px;
+    min-height: 100vh;
+    min-width: 70px;
+    z-index: 1000;
+    transition: all .25s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(15, 16, 17, 0.6);
+    position: fixed;
+
+}
+
+#sidebar.expand {
+    width: 260px;
+    min-width: 260px;
+}
+
+#sidebar:not(.expand) .sidebar-logo,
+#sidebar:not(.expand) a.sidebar-link span {
+    display: none;   
+}
+
+.sidebar-nav {
+    padding: 2rem 5px;
+    flex: 1 1 auto;
+}
+
+a .sidebar-link {
+    padding: .625rem 1.625rem;
+    color: #fff;
+    display: block;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-link i {
+    font-size: 2rem;
+    margin-right: 1.75rem;
+    color: #fff;
+    padding-inline: 0.75rem;
+    margin-bottom: 3.5rem;
+}
+
+a .sidebar-link:hover {
+    background-color: #fff;
+    color: #0F1011;
+    border-left: 3px solid #428bca;
+}
+
+.sidebar-item {
+    position: relative;
+}
+@media only screen and (max-width: 768px) {
+    #sidebar {
+        width: 70px;
+        min-height: 100vh;
+        min-width: 70px;
+        z-index: 1000;
+        transition: all .25s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        background-color: rgb(15, 16, 17);
+        position: fixed;
+    
+    }
+    
+    #sidebar.expand {
+        width: 260px;
+        min-width: 260px;
+    }
+    .card-container{
+        display: none;
+    }
+    
+}

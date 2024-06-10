@@ -1,0 +1,37 @@
+{# templates/booking/form.html.twig #}
+{% block modal %}
+    <div class="container-fluid">
+        <h1>Formulaire de réservation</h1>
+        {{ form_start(form, {'attr': {'id': 'bookingForm'}}) }}
+        <div class="mb-3">
+            {{ form_widget(form.product, {'attr': {'id': 'booking_product'}}) }}
+        </div>
+        <div class="mb-3">
+            {{ form_widget(form.period, {'attr': {'id': 'booking_period'}}) }}
+        </div>
+        <div class="mb-3">
+            {{ form_widget(form.isGroup, {'attr': {'id': 'booking_isGroup'}}) }}
+        </div>
+        <div class="mb-3" id="participantsContainer" style="display: none;">
+            <ul id="participant-list" data-prototype="{{ form_widget(form.participants.vars.prototype)|e('html_attr') }}">
+                {% for participant in form.participants %}
+                    <li>
+                        {{ form_widget(participant) }}
+                        <button type="button" class="remove-participant btn btn-danger">Supprimer</button>
+                    </li>
+                {% endfor %}
+            </ul>
+            <button type="button" id="add-participant" class="btn btn-secondary">Ajouter un participant</button>
+        </div>
+        <button class="btn btn-blueboot">Réserver</button>
+        {{ form_end(form) }}
+
+        {% if app.session.flashBag.has('error') %}
+            <div class="alert alert-danger">
+                {% for message in app.session.flashBag.get('error') %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

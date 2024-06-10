@@ -1,0 +1,53 @@
+<!-- templates/payment/payment_page.html.twig -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page de Paiement</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Paiement pour votre réservation</h1>
+    <form id="payment-form">
+        <div id="card-element">
+            <!-- Stripe Element will be inserted here. -->
+        </div>
+        <button id="submit">Payer</button>
+        <div id="error-message"></div>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const stripe = Stripe('pk_test_YourPublishableKey');
+            const elements = stripe.elements();
+            const cardElement = elements.create('card');
+            cardElement.mount('#card-element');
+
+            const form = document.getElementById('payment-form');
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                
+                const { paymentIntent, error } = await stripe.confirmCardPayment(
+                    '{{ client_secret }}', {
+                        payment_method: {
+                            card: cardElement,
+                            billing_details: {
+                                name: 'Customer Name',
+                            },
+                        }
+                    }
+                );
+
+                if (error) {
+                    document.getElementById('error-message').textContent = error.message;
+                } else {
+                    if (paymentIntent.status === 'succeeded') {
+                        alert('Paiement réussi !');
+                        // Mettre à jour le statut de la réservation en 'payée'
+                        window.location.href = '/thank-you'; // Rediriger vers une page de remerciement
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if app.request.attributes.get('_route') == 'app_profile_new' %}
+        Créer un Profil
+    {% else %}
+        Modifier le Profil
+    {% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('profile') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('profile') }}
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+		<div class="wrapper d-flex align-items-stretch row gx-0 pe-4">
+			<nav id="sidebarUser" class="col-3">
+				<div class="p-4">
+					<div class="mb-5">
+						<div class="card" id="profile-display">
+							<div class="card-header text-center p-5">
+								<a href="{{ path('app_profile') }}" class="img logo rounded-circle mb-5">
+									<img class="img-fluid" src="{{ asset('images/avatars/' ~ profile.avatarName) }}" alt="Avatar de {{ profile.name }}" style=" border: 2px solid #000; border-radius: 50%;"/>
+								</a>
+							</div>
+							<div class="card-body">
+								<div class="mb-3">
+									<p class="card-text">
+										<strong>Prénom :</strong>
+										{{ profile.firstname }}</p>
+								</div>
+								<div class="mb-3">
+									<p class="card-text">
+										<strong>Nom :</strong>
+										{{ profile.name }}</p>
+								</div>
+								<div class="mb-3">
+									{% if profile.isCompany %}
+										<p>Entreprise:
+											{{ profile.companyName }}</p>
+										<p>SIRET:
+											{{ profile.siretNumber }}</p>
+									{% endif %}
+								</div>
+								<div class="mb-3">
+									<p class="card-text">
+										<strong>Adresse de facturation :</strong>
+										{{ profile.billingAddress }}</p>
+								</div>
+								<div class="mb-3">
+									<p class="card-text">
+										<strong>Ville :</strong>
+										{{ profile.zipCode }}
+										-
+										{{ profile.billingCity }}</p>
+								</div>
+								<div class="mb-3">
+									<p class="card-text">
+										<strong>Téléphone :</strong>
+										{{ profile.phoneNumber }}</p>
+								</div>
+								<div class="mb-3">
+									<a href="{{ path('book') }}" id="bookProfile" class="btn btn-blueboot">Réserver bootcamps</a>
+								</div>
+								<div class="mb-3">
+									<a href="{{ path('app_profile_edit') }}" id="editProfileButton" class="btn btn-blueboot">Éditer le profil</a>
+								</div>
+								<form method="post" action="{{ path('app_profile_delete') }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre profil ?');" style="display:inline;">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ profile.id) }}">
+                <button class="btn btn-danger text-white">Supprimer mon compte</button>
+            </form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</nav>
+
+
+			<!-- Page Content  -->
+
+
+			<!-- ... le reste de votre code ... -->
+			<div id="dynamicContent" class="p-4 p-md-5 mt-4 border col-9">
+                <h1 class="text-center mb-4">Modifier le Profil</h1>
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        {{ form_start(form) }}
+                            {{ form_widget(form) }}
+                            <button type="submit" class="btn btn-blueboot w-100 mt-3">                       
+                                    Mettre à jour
+                            </button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+                
+        
+		</div>
+	</div>
+{% endblock %}

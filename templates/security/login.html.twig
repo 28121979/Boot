@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
+        <div class="text-center mb-3">
+            <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbW16dDV0aTZjbXU2cXY4N2I0eHZqdjhrdnVtem5udWl6Z3AzZ283ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/5bzysN9TANWB99yOAB/giphy.gif" alt="Animation" class="img-fluid">
+        </div>
+        
+        <form method="post">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="mb-3">
+                    You are logged in as {{ app.user.userIdentifier }},
+                    <a href="{{ path('app_logout') }}" class="btn btn-link">Logout</a>
+                </div>
+            {% endif %}
+
+            <h1 class="h3 mb-3 font-weight-normal text-center">Merci de vous connecter pour réserver</h1>
+            
+            <div class="mb-3">
+                <label for="username" class="form-label">Votre email</label>
+                <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+            </div>
+            
+            <div class="mb-3">
+                <label for="password" class="form-label">Votre mot de passe</label>
+                <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            {# Uncomment this section and add a remember_me option below your firewall to activate remember me functionality. #}
+            {#
+            <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" name="_remember_me" id="remember_me">
+                <label class="form-check-label" for="remember_me">Remember me</label>
+            </div>
+            #}
+
+            <button class="btn btn-lg btn-blueboot w-100" type="submit">Connexion</button>
+        </form>
+        
+        <!-- Lien d'inscription -->
+        <div class="mt-3 text-center">
+            Vous n'avez pas encore de compte ? <a href="{{ path('app_register') }}">Inscrivez-vous ici</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

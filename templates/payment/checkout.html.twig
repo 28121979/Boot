@@ -1,0 +1,37 @@
+{# templates/booking/confirm.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirm Booking</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Confirm your booking</h1>
+    <p>Please confirm your booking by proceeding to the payment.</p>
+    <button id="checkout-button">Pay Now</button>
+    <script type="text/javascript">
+        var stripe = Stripe('{{ publicKey }}');
+        var checkoutButton = document.getElementById('checkout-button');
+
+        checkoutButton.addEventListener('click', function () {
+            fetch('/create-checkout-session/{{ invoiceId }}', {
+                method: 'POST',
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(session) {
+                return stripe.redirectToCheckout({ sessionId: session.id });
+            })
+            .then(function(result) {
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

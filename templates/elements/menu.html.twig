@@ -1,0 +1,75 @@
+<div class="wrapper">
+	<aside id="sidebar">
+		<div class="d-flex">
+			<button id="toggle-btn" type="button" class="m-0 p-0">
+				<img class="img-fluid accueil" src="{{ asset('images/LogoBootcampsCenturio.jpg') }}"></button>
+		</div>
+		<ul class="sidebar-nav">
+			<li class="sidebar-item">
+				<a href="{{ path('app_home') }}" class="sidebar-link">
+					<i class="lni lni-home"></i>
+					<span>Accueil</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a href="{{ path('app_home') }}#productBootcamp" class="sidebar-link">
+					<i class="lni lni-bullhorn"></i>
+					<span>Nos BootCamps</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a href="{{ path('gallery_index' )}}" class="sidebar-link">
+					<i class="lni lni-image"></i>
+					<span>Galerie</span>
+				</a>
+			</li>
+			{% if not app.user %}
+			<li class="sidebar-item">
+				<a href="{{ path('app_register')}}" class="sidebar-link">
+					<i class="lni lni-thumbs-up"></i>
+					<span>S'inscrire</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a href="{{ path('app_login') }}" class="sidebar-link">
+					<i class="lni lni-enter"></i>
+					<span>Connexion</span>
+				</a>
+			</li>
+			{% else %}
+			<li class="sidebar-item">
+				<a href="{{ path('app_profile')}}" class="sidebar-link">
+					<i class="lni lni-user"></i>
+					<span>Profil</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a href="{{ path('book')}}" class="sidebar-link">
+					<i class="lni lni-calendar"></i>
+					<span>Reserver</span>
+				</a>
+			</li>
+			{% if is_granted('ROLE_ADMIN') %}
+			<li class="sidebar-item">
+				<a href="{{ path('admin') }}" class="sidebar-link">
+					<i class="lni lni-connectdevelop"></i>
+					<span>Administration</span>
+				</a>
+			</li>
+			{% endif %}
+			<li class="sidebar-item">
+				<a href="{{ path('app_logout') }}" class="sidebar-link">
+					<i class="lni lni-exit"></i>
+					<span>Déconnexion</span>
+				</a>
+			</li>
+			{% endif %}
+			<li class="sidebar-item">
+				<a href="" class="sidebar-link">
+					<i class="lni lni-popup"></i>
+					<span>Contact</span>
+				</a>
+			</li>
+		</ul>
+	</aside>
+</div>

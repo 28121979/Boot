@@ -1,0 +1,13 @@
+#bookingForm fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+#bookingForm legend {
+    display: none;
+}
+.long-event {
+    background-color: #ff0000 !important; /* Couleur de fond rouge */
+    border-color: #ff0000 !important; /* Couleur de bordure rouge */
+    color: #ffffff !important; /* Couleur du texte en blanc pour une meilleure lisibilité */
+}

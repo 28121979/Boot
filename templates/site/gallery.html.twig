@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Galerie de Photos{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Galerie de Photos</h1>
+    <div class="row">
+        {% for photo in photos %}
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <img src="{{ vich_uploader_asset(photo, 'imageFile') }}" class="card-img-top" alt="{{ photo.altText }}">
+                    <div class="card-body">
+                        <p class="card-text">{{ photo.altText }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
