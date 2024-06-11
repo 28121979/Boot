@@ -8,7 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ProfileType extends AbstractType
 {
@@ -27,48 +27,19 @@ class ProfileType extends AbstractType
             ])
             ->add('name', TextType::class, [
                 'label' => 'Nom',
-                'attr' => ['placeholder' => 'Entrez votre nom'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Le nom ne peut pas être vide.',
+                    ]),
+                ],
             ])
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom',
-                'attr' => ['placeholder' => 'Entrez votre prénom'],
-            ])
-            ->add('isCompany', CheckboxType::class, [
-                'label' => 'Est-ce une entreprise ?',
-                'required' => false,
-                'attr' => ['id' => 'isCompanyCheckbox'],
-            ])
-            ->add('companyName', TextType::class, [
-                'label' => 'Nom de l\'entreprise',
-                'required' => false,
-                'attr' => [
-                    'id' => 'companyNameField',
-                    'placeholder' => 'Entrez le nom de l\'entreprise',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Le prénom ne peut pas être vide.',
+                    ]),
                 ],
-            ])
-            ->add('siretNumber', TextType::class, [
-                'label' => 'Numéro SIRET',
-                'required' => false,
-                'attr' => [
-                    'id' => 'siretNumberField',
-                    'placeholder' => 'Entrez le numéro SIRET',
-                ],
-            ])
-            ->add('billingAddress', TextType::class, [
-                'label' => 'Adresse de facturation',
-                'attr' => ['placeholder' => 'Entrez l\'adresse de facturation'],
-            ])
-            ->add('billingCity', TextType::class, [
-                'label' => 'Ville de facturation',
-                'attr' => ['placeholder' => 'Entrez la ville de facturation'],
-            ])
-            ->add('zipCode', TextType::class, [
-                'label' => 'Code postal',
-                'attr' => ['placeholder' => 'Entrez le code postal'],
-            ])
-            ->add('phoneNumber', TextType::class, [
-                'label' => 'Numéro de téléphone',
-                'attr' => ['placeholder' => 'Entrez le numéro de téléphone'],
             ]);
     }
 
@@ -76,7 +47,6 @@ class ProfileType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Profile::class,
-            'translation_domain' => 'forms', // Utilisation d'un domaine de traduction si nécessaire
         ]);
     }
 }

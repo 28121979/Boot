@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\ParticipantsRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ParticipantsRepository::class)]
 class Participants
@@ -15,25 +14,13 @@ class Participants
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le nom ne peut pas être vide.")]
-    #[Assert\Length(
-        max: 255,
-        maxMessage: "Le nom ne peut pas dépasser {{ limit }} caractères."
-    )]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "L'email ne peut pas être vide.")]
-    #[Assert\Email(message: "L'email '{{ value }}' n'est pas valide.")]
-    #[Assert\Length(
-        max: 255,
-        maxMessage: "L'email ne peut pas dépasser {{ limit }} caractères."
-    )]
     private ?string $email = null;
 
     #[ORM\ManyToOne(inversedBy: 'participants')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message: "La réservation associée ne peut pas être vide.")]
     private ?Booking $booking = null;
 
     public function getId(): ?int
@@ -76,7 +63,6 @@ class Participants
 
         return $this;
     }
-
     public function __toString(): string
     {
         return $this->name.' '.$this->email;

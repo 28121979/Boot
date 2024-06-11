@@ -46,7 +46,7 @@ class BookingType extends AbstractType
                 'label' => 'Participants',
                 'prototype' => true,
                 'prototype_name' => '__participant__',
-                'attr' => ['class' => 'participant-collection']
+                'attr' => ['class' => 'participant-collection'],
             ]);
     }
 
@@ -54,9 +54,6 @@ class BookingType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Booking::class,
-            'render_fieldset' => false,
-            'show_legend' => false,
-            'translation_domain' => 'forms', // Vous pouvez spécifier un domaine de traduction ici si vous avez des fichiers de traduction.
         ]);
     }
 }

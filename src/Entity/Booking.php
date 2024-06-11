@@ -6,7 +6,6 @@ use App\Repository\BookingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BookingRepository::class)]
 class Booking
@@ -17,42 +16,29 @@ class Booking
     private ?int $id = null;
 
     #[ORM\Column(type: "datetime")]
-    #[Assert\NotBlank(message: "La date de réservation ne peut pas être vide.")]
-    #[Assert\GreaterThan("today", message: "La date de réservation doit être ultérieure à aujourd'hui.")]
     private ?\DateTimeInterface $bookAt = null;
 
     #[ORM\Column(type: "datetime", options: ["default" => "CURRENT_TIMESTAMP"])]
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(length: 20, nullable: true)]
-    #[Assert\Length(
-        max: 20,
-        maxMessage: "La période ne peut pas dépasser {{ limit }} caractères."
-    )]
     private ?string $period = null;
 
     #[ORM\Column]
-    #[Assert\NotNull(message: "Le champ 'est en groupe' ne peut pas être vide.")]
     private ?bool $isGroup = null;
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotNull(message: "Le produit associé ne peut pas être vide.")]
     private ?Product $product = null;
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotNull(message: "Le profil associé ne peut pas être vide.")]
     private ?Profile $profile = null;
 
     /**
      * @var Collection<int, Participant>
      */
     #[ORM\OneToMany(targetEntity: Participants::class, mappedBy: 'booking', cascade: ['persist', 'remove'])]
-    #[Assert\Count(
-        min: 1,
-        minMessage: "Il doit y avoir au moins un participant."
-    )]
     private Collection $participants;
 
     #[ORM\Column]

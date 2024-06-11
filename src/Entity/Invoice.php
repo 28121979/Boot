@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\InvoiceRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
 class Invoice
@@ -15,32 +14,19 @@ class Invoice
     private ?int $id = null;
 
     #[ORM\Column(type: "datetime")]
-    #[Assert\NotBlank(message: "La date d'émission ne peut pas être vide.")]
-    #[Assert\LessThanOrEqual("today", message: "La date d'émission ne peut pas être dans le futur.")]
     private ?\DateTimeInterface $issuedAt = null;
 
     #[ORM\Column(type: "datetime", nullable: true)]
-    #[Assert\GreaterThanOrEqual(
-        propertyPath: "issuedAt",
-        message: "La date de paiement doit être postérieure ou égale à la date d'émission."
-    )]
     private ?\DateTimeInterface $paidAt = null;
 
     #[ORM\OneToOne(inversedBy: 'invoice')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message: "La réservation associée ne peut pas être vide.")]
     private ?Booking $booking = null;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 2)]
-    #[Assert\NotBlank(message: "Le montant ne peut pas être vide.")]
-    #[Assert\Positive(message: "Le montant doit être supérieur à zéro.")]
     private ?float $amount = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(
-        max: 255,
-        maxMessage: "L'identifiant de session Stripe ne peut pas dépasser {{ limit }} caractères."
-    )]
     private ?string $stripeSessionId = null;
 
     public function getId(): ?int
@@ -80,7 +66,6 @@ class Invoice
         $this->booking = $booking;
         return $this;
     }
-
     public function getAmount(): ?float
     {
         return $this->amount;
@@ -91,7 +76,6 @@ class Invoice
         $this->amount = $amount;
         return $this;
     }
-
     public function getStripeSessionId(): ?string
     {
         return $this->stripeSessionId;
@@ -100,8 +84,8 @@ class Invoice
     public function setStripeSessionId(?string $stripeSessionId): self
     {
         $this->stripeSessionId = $stripeSessionId;
+
         return $this;
     }
 }
-
 

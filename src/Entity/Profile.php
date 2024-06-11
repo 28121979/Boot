@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ProfileRepository::class)]
@@ -23,12 +22,6 @@ class Profile
 
     // NOTE: This is not a mapped field of entity metadata, just a simple property.
     #[Vich\UploadableField(mapping: 'avatars', fileNameProperty: 'avatarName')]
-    #[Assert\File(
-        maxSize: '5M',
-        maxSizeMessage: "La taille de l'avatar ne peut pas dépasser {{ limit }}.",
-        mimeTypes: ["image/jpeg", "image/png", "image/gif"],
-        mimeTypesMessage: "Veuillez télécharger une image valide (jpeg, png, gif)."
-    )]
     private ?File $avatarFile = null;
 
     #[ORM\Column(nullable: true)]
@@ -38,74 +31,34 @@ class Profile
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le nom ne peut pas être vide.")]
-    #[Assert\Length(
-        max: 255,
-        maxMessage: "Le nom ne peut pas dépasser {{ limit }} caractères."
-    )]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le prénom ne peut pas être vide.")]
-    #[Assert\Length(
-        max: 255,
-        maxMessage: "Le prénom ne peut pas dépasser {{ limit }} caractères."
-    )]
     private ?string $firstname = null;
 
     #[ORM\Column]
-    #[Assert\NotNull(message: "Le champ 'est une entreprise' ne peut pas être vide.")]
     private ?bool $isCompany = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(
-        max: 255,
-        maxMessage: "Le nom de l'entreprise ne peut pas dépasser {{ limit }} caractères."
-    )]
     private ?string $companyName = null;
 
     #[ORM\Column(length: 20, nullable: true)]
-    #[Assert\Length(
-        max: 20,
-        maxMessage: "Le numéro SIRET ne peut pas dépasser {{ limit }} caractères."
-    )]
     private ?string $siretNumber = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "L'adresse de facturation ne peut pas être vide.")]
-    #[Assert\Length(
-        max: 255,
-        maxMessage: "L'adresse de facturation ne peut pas dépasser {{ limit }} caractères."
-    )]
     private ?string $billingAddress = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "La ville de facturation ne peut pas être vide.")]
-    #[Assert\Length(
-        max: 255,
-        maxMessage: "La ville de facturation ne peut pas dépasser {{ limit }} caractères."
-    )]
     private ?string $billingCity = null;
 
     #[ORM\Column(length: 10)]
-    #[Assert\NotBlank(message: "Le code postal ne peut pas être vide.")]
-    #[Assert\Length(
-        max: 10,
-        maxMessage: "Le code postal ne peut pas dépasser {{ limit }} caractères."
-    )]
     private ?string $zipCode = null;
 
     #[ORM\Column(length: 30)]
-    #[Assert\NotBlank(message: "Le numéro de téléphone ne peut pas être vide.")]
-    #[Assert\Length(
-        max: 30,
-        maxMessage: "Le numéro de téléphone ne peut pas dépasser {{ limit }} caractères."
-    )]
     private ?string $phoneNumber = null;
 
     #[ORM\OneToOne(inversedBy: 'profile', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message: "L'utilisateur associé ne peut pas être vide.")]
     private ?User $idUser = null;
 
     /**
@@ -119,27 +72,30 @@ class Profile
         $this->bookings = new ArrayCollection();
     }
 
+    
+
+    
+
     public function getId(): ?int
     {
         return $this->id;
     }
-
     /**
-     * Si vous téléchargez un fichier manuellement (c'est-à-dire sans utiliser le formulaire Symfony),
-     * assurez-vous qu'une instance de 'UploadedFile' est injectée dans ce setter pour déclencher la mise à jour.
-     * Si le paramètre de configuration de ce bundle 'inject_on_load' est défini sur 'true', ce setter
-     * doit être capable d'accepter une instance de 'File' car le bundle en injectera une ici
-     * pendant l'hydratation de Doctrine.
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
      *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $avatarFile
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
      */
     public function setAvatarFile(?File $avatarFile = null): void
     {
         $this->avatarFile = $avatarFile;
 
         if (null !== $avatarFile) {
-            // Il est nécessaire qu'au moins un champ change si vous utilisez doctrine
-            // sinon les listeners d'événements ne seront pas appelés et le fichier est perdu
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();
         }
     }
@@ -313,4 +269,6 @@ class Profile
     {
         return $this->name . ' ' . $this->firstname;
     }
+
+    
 }

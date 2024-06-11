@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -22,12 +21,6 @@ class Product
 
     // NOTE: This is not a mapped field of entity metadata, just a simple property.
     #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'imageName')]
-    #[Assert\File(
-        maxSize: '5M',
-        maxSizeMessage: "La taille de l'image ne peut pas dépasser {{ limit }}.",
-        mimeTypes: ["image/jpeg", "image/png", "image/gif"],
-        mimeTypesMessage: "Veuillez télécharger une image valide (jpeg, png, gif)."
-    )]
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
@@ -37,30 +30,16 @@ class Product
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(message: "Le forfait ne peut pas être vide.")]
-    #[Assert\Length(
-        max: 100,
-        maxMessage: "Le forfait ne peut pas dépasser {{ limit }} caractères."
-    )]
     private ?string $forfait = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Assert\NotBlank(message: "La description ne peut pas être vide.")]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::FLOAT)]
-    #[Assert\NotBlank(message: "La durée ne peut pas être vide.")]
-    #[Assert\Positive(message: "La durée doit être positive.")]
     private ?float $duration = null;
 
     // Nouveau champ pour le fichier de l'image de fond
     #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'bgName')]
-    #[Assert\File(
-        maxSize: '5M',
-        maxSizeMessage: "La taille de l'image de fond ne peut pas dépasser {{ limit }}.",
-        mimeTypes: ["image/jpeg", "image/png", "image/gif"],
-        mimeTypesMessage: "Veuillez télécharger une image de fond valide (jpeg, png, gif)."
-    )]
     private ?File $bgFile = null;
 
     #[ORM\Column(nullable: true)]
@@ -73,16 +52,9 @@ class Product
     private Collection $galleries;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: "Le tarif de base ne peut pas être vide.")]
-    #[Assert\Positive(message: "Le tarif de base doit être supérieur à zéro.")]
     private ?float $tarifBase = null;
 
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank(message: "Le niveau ne peut pas être vide.")]
-    #[Assert\Length(
-        max: 50,
-        maxMessage: "Le niveau ne peut pas dépasser {{ limit }} caractères."
-    )]
     private ?string $level = null;
 
     /**
@@ -109,7 +81,7 @@ class Product
     public function setDuration(float $duration): static
     {
         if (!in_array($duration, [self::DURATION_HALF_DAY, self::DURATION_FULL_DAY, self::DURATION_TWO_DAYS])) {
-            throw new \InvalidArgumentException("Durée invalide.");
+            throw new \InvalidArgumentException("Invalid duration");
         }
         $this->duration = $duration;
 
@@ -120,13 +92,12 @@ class Product
     {
         return $this->id;
     }
-
     /**
-     * Si vous téléchargez un fichier manuellement (c'est-à-dire sans utiliser le formulaire Symfony),
-     * assurez-vous qu'une instance de 'UploadedFile' est injectée dans ce setter pour déclencher la mise à jour.
-     * Si le paramètre de configuration de ce bundle 'inject_on_load' est défini sur 'true', ce setter
-     * doit être capable d'accepter une instance de 'File' car le bundle en injectera une ici
-     * pendant l'hydratation de Doctrine.
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
      */
@@ -135,8 +106,8 @@ class Product
         $this->imageFile = $imageFile;
 
         if (null !== $imageFile) {
-            // Il est nécessaire qu'au moins un champ change si vous utilisez doctrine
-            // sinon les listeners d'événements ne seront pas appelés et le fichier est perdu
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();
         }
     }
@@ -233,7 +204,6 @@ class Product
 
         return $this;
     }
-
     public function __toString(): string
     {
         return $this->forfait;
